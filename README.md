@@ -31,5 +31,8 @@ You should see ‘rockets’ when you ls
 - You should start in the main branch
 ```
  git status
-On branch
-``
+On branch main...
+```
+- Make sure main is up-to-date with the origin
+```
+```
