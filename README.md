@@ -25,7 +25,10 @@ You should see ‘rockets’ when you ls
 ```
 
 - cd into the `rockets` directory
-`code README.md` // !important: when prompted ‘Open file in CS50 Lab’  select ‘Cancel’
+```
+cd rockets
+code README.md // !important: when prompted ‘Open file in CS50 Lab’  select ‘Cancel’
+```
 
 ### Branching
 - You should start in the main branch
@@ -33,6 +36,38 @@ You should see ‘rockets’ when you ls
  git status
 On branch main...
 ```
+- if not
+```
+git checkout main
+```
+
 - Make sure main is up-to-date with the origin
 ```
+git pull
+Enter passphrase for key '/home/ubuntu/.ssh/id_rsa':
+Already up to date.
 ```
+
+Create new branch with a short description
+```
+git checkout -b repository-setup-instructions
+Switched to a new branch 'repository-setup-instructions'
+
+git push origin // this is normally how you push code up to the repo I usually just run this to get the correct command
+fatal: The current branch repository-setup-instructions has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin repository-setup-instructions
+
+git push --set-upstream origin repository-setup-instructions
+```
+- Now a branch will exist in github
+`https://github.com/daviddening/rockets/tree/repository-setup-instructions`
+
+- Do normal development. // Codespace appears to automatically be saving he code
+```
+git add .
+```
+- Via the UI, look for 'contribute' and 'create new pull request'
+- On the right hand side select Ben or Dave as the reviewer
+
