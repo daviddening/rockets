@@ -73,5 +73,48 @@ def login():
     else:
         return render_template("login.html")
 
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        # ENSURE USERNAME WAS SUBMITTED
+        if not request.form.get("username"):
+            return apology("must provide username", 400)
+
+        # Ensure username does not exist already
+        username = request.form.get("username")
+        if db.execute("SELECT username FROM users WHERE username=(?)", username):
+            return apology("username already exists", 400)
+
+
+        # Ensure password is entered
+        if not request.form.get("password"):
+            return apology("must provide a password", 400)
+
+
+        # Ensure confirmation exists
+        if not request.form.get("confirmation"):
+            return apology("must provide a confirmation", 400)
+
+
+        # Ensure password and cinfirmation match
+        if request.form.get("password") != request.form.get("confirmation"):
+            return apology("Passwords do not match!", 400)
+
+
+        # Register user if they passed previous tests
+        password = request.form.get("password")
+
+        db.execute("INSERT INTO users(username, hash) VALUES(?, ?)", username, generate_password_hash(password))
+        
 
 
