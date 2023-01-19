@@ -13,6 +13,14 @@ const DIR_CHANGE_MAP =[
     { x: -1, y: 0}  // LEFT
 ];
 
+const tempDirectionArrowMap = [
+    ' ',
+    '▲',
+    '►',
+    '▼',
+    '◄'
+]
+
 // 0 ------ >  X
 // |
 // |
@@ -45,7 +53,7 @@ const staticBoard = staticBoardDB.map ((row) => {
 const tempUpdateBoard = (nextBoard, movedObjects) => {
     nextBoard.forEach((row) => {
         row.forEach((col) => {
-        process.stdout.write(col ? 'X' : 'O');
+        process.stdout.write(col ? tempDirectionArrowMap[col?.direction] : '_');
         });
         process.stdout.write('\n')
     })
@@ -91,12 +99,12 @@ const resolveMove = async(initialPosition, board, updateBoard) => {
 const moveRockets = (board, activeRockets) => {
     const movedRockets = activeRockets.map((activeRocket) => {
         console.log(`----${activeRocket}`)
-        const { initialPosition: {x, y}, rocket: { direction }} = activeRocket;
+        const { initialPosition: {x, y}, rocket} = activeRocket;
         console.log(activeRocket);
-        console.log(`====${x} ${y} ${direction}`);
-        const endX = x + DIR_CHANGE_MAP[direction].x;
-        const endY = y + DIR_CHANGE_MAP[direction].y;
-        return { startPosition: {x, y}, endPosition: {x: endX, y:endY}, direction }
+        console.log(`====${x} ${y} ${rocket.direction}`);
+        const endX = x + DIR_CHANGE_MAP[rocket.direction].x;
+        const endY = y + DIR_CHANGE_MAP[rocket.direction].y;
+        return { startPosition: {x, y}, endPosition: {x: endX, y:endY}, rocket}
     })
 
     const newActiveRockets = movedRockets.filter(( move )=>{
@@ -106,12 +114,15 @@ const moveRockets = (board, activeRockets) => {
     }).map((move)=> {
         const { startPosition, endPosition: {x, y} } = move;
         const hitRocket = board[y][x];
-        console.log(`x: ${x} y: ${y}`);
+        console.log(`x: ${x} y: ${y} rocket = ${move.rocket}`);
+
 
         // TODO put a moving rocket on the board!
         if ( hitRocket ) {
             console.log('hit a rocket '+hitRocket);
-            board[y][x] = null; // TODO later we'll want to mark a collision
+           // board[y][x] = null; // TODO later we'll want to mark a collision
+        } else {
+            board[y][x] = move.rocket;
         }
         board[startPosition.y][startPosition.x] = null;
 
@@ -121,7 +132,7 @@ const moveRockets = (board, activeRockets) => {
         if (hitRocket) {
          return { initialPosition: { x, y }, rocket: hitRocket }
          }
-         return { initialPosition: { x, y }, rocket: { direction: move.direction }};
+         return { initialPosition: { x, y }, rocket: move.rocket};
     })
 
     //console.log(newActiveRockets[0].rocket);
