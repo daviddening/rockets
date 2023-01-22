@@ -1,59 +1,21 @@
 {% extends "layout.html" %}
-{% block head %}
-<style>
-body {
-    background: lightblue;
-}
-#canvas {
-    background: #fff;
-    margin: 20px;
-}
-</style>
-<script type="application/javascript" language="javascript">
-//grid width and height
-var bw = 400;
-var bh = 400;
-//padding around grid
-var p = 10;
-//size of canvas
-var cw = bw + (p*2) + 1;
-var ch = bh + (p*2) + 1;
 
-var canvas = $('<canvas/>').attr({width: cw, height: ch}).appendTo('body');
-
-var context = canvas.get(0).getContext("2d");
-
-function drawBoard(){
-    for (var x = 0; x <= bw; x += 40) {
-        context.moveTo(0.5 + x + p, p);
-        context.lineTo(0.5 + x + p, bh + p);
-    }
-
-
-    for (var x = 0; x <= bh; x += 40) {
-        context.moveTo(p, 0.5 + x + p);
-        context.lineTo(bw + p, 0.5 + x + p);
-    }
-
-    context.strokeStyle = "black";
-    context.stroke();
-}
-
-drawBoard();
-
-
-</script>
-
-
-
-{% endblock %}
 {% block title %}
-    Rockets!
+        Rockets!
 {% endblock %}
+
 
 {% block main %}
-<body>
+{% block javascript %}
+<script type="application/javascript" language="javascript">
 
-</body>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.rect(10, 10, 150, 100);
+    ctx.stroke();
+
+</script>
+{% endblock %}
+<canvas id="canvas" width="520px" height="520px" style="border:1px solid #000000;"></canvas>
 
 {% endblock %}
