@@ -33,7 +33,7 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    return render_template("index.html", nickname=session['nickname'])
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -113,10 +113,10 @@ def register():
 
         # Register user if they passed previous tests
         password = request.form.get("password")
-        nickname = request.form.get("password")
+        nickname = request.form.get("nickname")
 
         db.execute("INSERT INTO users(username, hash, nickname) VALUES(?, ?, ?)", username, generate_password_hash(password), nickname)
-        return redirect("index.html")
+        return redirect("/")
 
     else:
         return render_template("register.html")
