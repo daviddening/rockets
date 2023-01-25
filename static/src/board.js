@@ -1,4 +1,4 @@
-const utils =  require('boardUtils.js');
+import './boardUtils.js';
 // Box width
 var bw = 500;
 // Box height
