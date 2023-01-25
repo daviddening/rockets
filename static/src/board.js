@@ -33,10 +33,21 @@ function drawGrid(ctx) {
     ctx.stroke();
 }
 
+function drawPuzzle(ctx, board) {
+    board.each((row, y) => {
+        row.each((rocket, x) => {
+            if (rocket) {
+                
+            }
+        })
+
+    })
+}
+
 function drawBoard() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
 
     drawGrid(ctx);
-
+    drawPuzzle(ctx, staticBoard);
 }
