@@ -5,11 +5,7 @@ var bh = 500;
 // Padding
 var p = 10;
 
-
-function drawBoard(){
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-
+function drawGrid(ctx) {
     ctx.beginPath();
     for (var x = 0; x <= bw; x += 50) {
         ctx.moveTo(0.5 + x + p, p);
@@ -34,5 +30,12 @@ function drawBoard(){
 
 
     ctx.stroke();
+}
+
+function drawBoard() {
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    drawGrid(ctx);
 
 }
