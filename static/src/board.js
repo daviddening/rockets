@@ -5,6 +5,7 @@ var bh = 500;
 // Padding
 var p = 10;
 
+
 function drawBoard(){
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
