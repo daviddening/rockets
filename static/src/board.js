@@ -34,13 +34,14 @@ function drawGrid(ctx) {
 }
 
 function drawPuzzle(ctx, board) {
+    ctx.font = "18px Arial";
+
     board.each((row, y) => {
         row.each((rocket, x) => {
             if (rocket) {
-                
+                ctx.fillText("*", x*50+25, y*50+25);
             }
         })
-
     })
 }
 
