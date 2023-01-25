@@ -1,4 +1,4 @@
-import './boardUtils.js';
+//import './boardUtils.js';
 // Box width
 var bw = 500;
 // Box height
@@ -36,10 +36,10 @@ function drawGrid(ctx) {
 function drawPuzzle(ctx, board) {
     ctx.font = "18px Arial";
 
-    board.each((row, y) => {
-        row.each((rocket, x) => {
+    board.forEach((row, y) => {
+        row.forEach((rocket, x) => {
             if (rocket) {
-                ctx.fillText("*", x*50+25, y*50+25);
+                ctx.fillText("*", x*50+25, y*50+50);
             }
         })
     })
@@ -50,5 +50,5 @@ function drawBoard() {
     var ctx = canvas.getContext("2d");
 
     drawGrid(ctx);
-    drawPuzzle(ctx, utils.staticBoard);
+    drawPuzzle(ctx, staticBoard);
 }

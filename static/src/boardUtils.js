@@ -1,9 +1,9 @@
-export const DIRECTION_UP = 1;
-export const DIRECTION_RIGHT = 2;
-export const DIRECTION_DOWN = 3;
-export const DIRECTION_LEFT = 4;
+const DIRECTION_UP = 1;
+const DIRECTION_RIGHT = 2;
+const DIRECTION_DOWN = 3;
+const DIRECTION_LEFT = 4;
 
-export const DIR_CHANGE_MAP = [
+const DIR_CHANGE_MAP = [
     { x: 0, y: 0 }, // PLACEHOLDER
     { x: 0, y: -1 }, //UP
     { x: 1, y: 0 }, // RIGHT
@@ -11,7 +11,7 @@ export const DIR_CHANGE_MAP = [
     { x: -1, y: 0 }  // LEFT
 ];
 
-export const tempDirectionArrowMap = [
+const tempDirectionArrowMap = [
     ' ',
     '▲',
     '►',
@@ -34,7 +34,7 @@ const staticBoardDB = [
     [0, 1, 0, 4, 0]
 ];
 
-export const ROCKET_ID_TO_OBJ_MAP = [
+const ROCKET_ID_TO_OBJ_MAP = [
     null,
     { direction: DIRECTION_UP },
     { direction: DIRECTION_RIGHT },
@@ -42,7 +42,7 @@ export const ROCKET_ID_TO_OBJ_MAP = [
     { direction: DIRECTION_LEFT },
 ];
 
-export const staticBoard = staticBoardDB.map((row) => {
+const staticBoard = staticBoardDB.map((row) => {
     return row.map((id) => {
         return ROCKET_ID_TO_OBJ_MAP[id];
     })
