@@ -1,4 +1,4 @@
-import {staticBoard} from 'boardUtils.js'
+const utils =  require('boardUtils.js');
 // Box width
 var bw = 500;
 // Box height
@@ -50,5 +50,5 @@ function drawBoard() {
     var ctx = canvas.getContext("2d");
 
     drawGrid(ctx);
-    drawPuzzle(ctx, staticBoard);
+    drawPuzzle(ctx, utils.staticBoard);
 }
