@@ -1,3 +1,4 @@
+import {staticBoard} from 'boardUtils.js'
 // Box width
 var bw = 500;
 // Box height
