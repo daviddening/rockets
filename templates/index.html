@@ -1,22 +1,25 @@
-<script src="../src/board.js"/>
+
 {% extends "layout.html" %}
 {% block javascript %}
+<script src="../static/src/board.js"></script>
 <script type="application/javascript" language="javascript">
-document.addEventListener('DOMContentLoaded', (event) => {
-
-});
-
+        document.addEventListener('DOMContentLoaded', (event) => {
+                console.log('DOMContentLoaded');
+                drawBoard();
+        });
 </script>
 {% endblock %}
 
 {% block title %}
-        Rockets!
+Rockets!
 {% endblock %}
 
 
 {% block main %}
 
-<div><h1>{{ nickname }}</h1></div>
+<div>
+        <h1>{{ nickname }}</h1>
+</div>
 
 <canvas id="canvas" width="520px" height="520px" style="border:1px solid #000000;"></canvas>
 
