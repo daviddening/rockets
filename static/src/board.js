@@ -1,19 +1,21 @@
 //import './boardUtils.js';
-// Box width
+// Square size
+var ss = 100;
+// Board width
 var bw = 500;
-// Box height
+// Board height
 var bh = 500;
 // Padding
 var p = 10;
 
 function drawGrid(ctx) {
     ctx.beginPath();
-    for (var x = 0; x <= bw; x += 50) {
+    for (var x = 0; x <= bw; x += ss) {
         ctx.moveTo(0.5 + x + p, p);
         ctx.lineTo(0.5 + x + p, bh + p);
     }
 
-    for (var x = 0; x <= bh; x += 50) {
+    for (var x = 0; x <= bh; x += ss) {
         ctx.moveTo(p, 0.5 + x + p);
         ctx.lineTo(bw + p, 0.5 + x + p);
     }
@@ -23,11 +25,7 @@ function drawGrid(ctx) {
     ctx.beginPath();
     ctx.lineWidth = 15;
     ctx.strokeStyle = "red";
-    ctx.moveTo(0.5, 0.5);
-    ctx.lineTo(0.5, 520);
-    ctx.lineTo(520, 520);
-    ctx.lineTo(520, 0.5);
-    ctx.lineTo(0.5, 0.5);
+    ctx.rect(0.5, 0.5, 520, 520);
 
 
     ctx.stroke();
@@ -39,7 +37,7 @@ function drawPuzzle(ctx, board) {
     board.forEach((row, y) => {
         row.forEach((rocket, x) => {
             if (rocket) {
-                ctx.fillText("*", x*50+25, y*50+50);
+                ctx.fillText("*", x*ss+50+p, y*ss+50+p);
             }
         })
     })
