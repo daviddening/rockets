@@ -93,7 +93,9 @@ const moveRockets = (board, activeRockets) => {
 
             case 'double':
                 if ( hitRocket.direction = DIRECTION_UP ) {
-                    rockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
+                    rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
+                } else {
+                    rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
                 }
                 break
             case 'single':
