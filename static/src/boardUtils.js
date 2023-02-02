@@ -53,7 +53,7 @@ const staticBoard = staticBoardDB.map((row) => {
 const tempDisplay = (nextBoard, movedObjects) => {
     nextBoard.forEach((row) => {
         row.forEach((col) => {
-            process.stdout.write(col ? tempDirectionArrowMap[col?.direction] : '_');
+            process.stdout.write(col ? tempDirectionArrowMap[col?.direction||0] : '_');
         });
         process.stdout.write('\n')
     })
