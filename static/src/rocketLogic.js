@@ -105,6 +105,7 @@ const moveRockets = (board, activeRockets) => {
 }
 
 // Display initial board
+console.log(utils)
 tempUpdateBoard(utils.staticBoard, []);
 const initialPosition = { x: 4, y: 0 };
 // Resolve a move that sets off a rocket at 4,0

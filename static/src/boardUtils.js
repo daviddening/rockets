@@ -48,3 +48,4 @@ const staticBoard = staticBoardDB.map((row) => {
     })
 });
 
+export { staticBoard };
