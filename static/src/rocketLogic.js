@@ -1,7 +1,7 @@
 // RUN with `node rocketLogic.js`
 const utils = require('./boardUtils.js');
 
-
+const { DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, ROCKET_ID_TO_OBJ_MAP} = utils;
 const DEBUG = false;
 const debugLog = (log) => {
     if (DEBUG) {
@@ -89,7 +89,7 @@ const moveRockets = (board, activeRockets) => {
 
         if (hitRocket) {
             var rockets = []
-            switch (type) {
+            switch (hitRocket.type) {
 
                 case 'double':
                     if (hitRocket.direction = DIRECTION_UP) {
