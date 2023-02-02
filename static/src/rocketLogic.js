@@ -105,7 +105,7 @@ const moveRockets = (board, activeRockets) => {
             return rockets;
         }
         return { initialPosition: { x, y }, rocket: moveRocket.rocket };
-    })
+    }).flat()
 
     return { movedRockets, newActiveRockets };
 }
