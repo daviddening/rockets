@@ -62,8 +62,8 @@ const moveRockets = (board, activeRockets) => {
     const movedRockets = activeRockets.map((activeRocket) => {
         const { initialPosition: { x, y }, rocket } = activeRocket;
         debugLog(activeRocket);
-        const endX = x + DIR_CHANGE_MAP[rocket.direction].x;
-        const endY = y + DIR_CHANGE_MAP[rocket.direction].y;
+        const endX = x + utils.DIR_CHANGE_MAP[rocket.direction].x;
+        const endY = y + utils.DIR_CHANGE_MAP[rocket.direction].y;
         return { startPosition: { x, y }, endPosition: { x: endX, y: endY }, rocket }
     })
 

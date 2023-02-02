@@ -58,4 +58,4 @@ const tempDisplay = (nextBoard, movedObjects) => {
     process.stdout.write('\n')
 }
 
-module.exports = { staticBoard, tempDisplay };
+module.exports = { staticBoard, tempDisplay, DIR_CHANGE_MAP };
