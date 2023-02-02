@@ -88,7 +88,19 @@ const moveRockets = (board, activeRockets) => {
         // TODO: here we could do additional work, like special rockets that go in two, three, directions, or don't fire at all
 
         if (hitRocket) {
-            return { initialPosition: { x, y }, rocket: hitRocket }
+            var rockets = []
+            switch (type) {
+
+            case 'double':
+                if ( hitRocket.direction = DIRECTION_UP ) {
+                    rockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
+                }
+                break
+            case 'single':
+            case default: {
+             rockets =  [{ initialPosition: { x, y }, rocket: hitRocket }]
+            }
+            return rockets;
         }
         return { initialPosition: { x, y }, rocket: moveRocket.rocket };
     })
