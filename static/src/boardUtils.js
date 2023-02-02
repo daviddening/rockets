@@ -36,10 +36,12 @@ const staticBoardDB = [
 
 const ROCKET_ID_TO_OBJ_MAP = [
     null,
-    { direction: DIRECTION_UP },
-    { direction: DIRECTION_RIGHT },
-    { direction: DIRECTION_DOWN },
-    { direction: DIRECTION_LEFT },
+    { type: 'single', direction: DIRECTION_UP },
+    { type: 'single', direction: DIRECTION_RIGHT },
+    { type: 'single', direction: DIRECTION_DOWN },
+    { type: 'single', direction: DIRECTION_LEFT },
+    { type: 'double', direction: DIRECTION_UP },
+    { type: 'double', direction: DIRECTION_RIGHT },
 ];
 
 const staticBoard = staticBoardDB.map((row) => {
