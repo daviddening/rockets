@@ -91,21 +91,21 @@ const moveRockets = (board, activeRockets) => {
             var rockets = []
             switch (type) {
 
-            case 'double':
-                if ( hitRocket.direction = DIRECTION_UP ) {
-                    rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
-                } else {
-                    rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
+                case 'double':
+                    if (hitRocket.direction = DIRECTION_UP) {
+                        rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
+                    } else {
+                        rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
+                    }
+                    break
+                case 'single':
+                default: {
+                    rockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
                 }
-                break
-            case 'single':
-            default: {
-             rockets =  [{ initialPosition: { x, y }, rocket: hitRocket }]
+                    return rockets;
             }
-            return rockets;
-        }
-        return { initialPosition: { x, y }, rocket: moveRocket.rocket };
-    }).flat()
+            return { initialPosition: { x, y }, rocket: moveRocket.rocket };
+        }).flat()
 
     return { movedRockets, newActiveRockets };
 }
