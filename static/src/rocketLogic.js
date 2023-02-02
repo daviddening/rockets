@@ -99,7 +99,7 @@ const moveRockets = (board, activeRockets) => {
                 }
                 break
             case 'single':
-            case default: {
+            default: {
              rockets =  [{ initialPosition: { x, y }, rocket: hitRocket }]
             }
             return rockets;
