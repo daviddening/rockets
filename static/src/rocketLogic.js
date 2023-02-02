@@ -83,7 +83,7 @@ const moveRockets = (board, activeRockets) => {
             board[y][x] = moveRocket.rocket;
         }
         // clean up old rocket position
-        board[startPosition.y][startPosition.x] = null;
+        board[startPosition.y][startPosition.x] = [];
 
         // TODO: here we could do additional work, like special rockets that go in two, three, directions, or don't fire at all
 
