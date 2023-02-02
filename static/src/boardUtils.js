@@ -48,4 +48,14 @@ const staticBoard = staticBoardDB.map((row) => {
     })
 });
 
-export { staticBoard };
+const tempDisplay = (nextBoard, movedObjects) => {
+    nextBoard.forEach((row) => {
+        row.forEach((col) => {
+            process.stdout.write(col ? tempDirectionArrowMap[col?.direction] : '_');
+        });
+        process.stdout.write('\n')
+    })
+    process.stdout.write('\n')
+}
+
+module.exports = { staticBoard, tempDisplay };

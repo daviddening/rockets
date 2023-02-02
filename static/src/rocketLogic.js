@@ -9,15 +9,7 @@ const debugLog = (log) => {
     }
 }
 
-const tempUpdateBoard = (nextBoard, movedObjects) => {
-    nextBoard.forEach((row) => {
-        row.forEach((col) => {
-            process.stdout.write(col ? tempDirectionArrowMap[col?.direction] : '_');
-        });
-        process.stdout.write('\n')
-    })
-    process.stdout.write('\n')
-}
+
 /**
  * Uploads an array of attachments to the respective service.
  *
@@ -105,8 +97,7 @@ const moveRockets = (board, activeRockets) => {
 }
 
 // Display initial board
-console.log(utils)
-tempUpdateBoard(utils.staticBoard, []);
+utils.tempDisplay(utils.staticBoard, []);
 const initialPosition = { x: 4, y: 0 };
 // Resolve a move that sets off a rocket at 4,0
-resolveMove(initialPosition, utils.staticBoard, tempUpdateBoard);
+resolveMove(initialPosition, utils.staticBoard, utils.tempDisplay);
