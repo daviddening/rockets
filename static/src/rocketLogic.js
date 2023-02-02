@@ -1,5 +1,5 @@
 // RUN with `node rocketLogic.js`
-
+require('./boardUtils.js');
 
 
 const DEBUG = false;
