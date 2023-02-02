@@ -1,5 +1,5 @@
 // RUN with `node rocketLogic.js`
-require('./boardUtils.js');
+const utils = require('./boardUtils.js');
 
 
 const DEBUG = false;
@@ -105,7 +105,7 @@ const moveRockets = (board, activeRockets) => {
 }
 
 // Display initial board
-tempUpdateBoard(staticBoard, []);
+tempUpdateBoard(utils.staticBoard, []);
 const initialPosition = { x: 4, y: 0 };
 // Resolve a move that sets off a rocket at 4,0
-resolveMove(initialPosition, staticBoard, tempUpdateBoard);
+resolveMove(initialPosition, utils.staticBoard, tempUpdateBoard);
