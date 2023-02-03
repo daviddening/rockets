@@ -3,10 +3,12 @@
 {% block javascript %}
 <script src="../static/src/boardUtils.js"></script>
 <script src="../static/src/board.js"></script>
+<script src="../static/src/rocketLogic.js"></script>
 <script type="application/javascript" language="javascript">
         document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('DOMContentLoaded');
-                drawBoard();
+                const ctx = drawBoard();
+                resolveMove({x: 2, y: 0}, staticBoard, ctx, drawPuzzle)
         });
 </script>
 {% endblock %}
@@ -22,6 +24,7 @@ Rockets!
         <h1>{{ nickname }}</h1>
 </div>
 
+//<button onClick="">Ignite 0, 0</button>
 <canvas id="canvas" width="520px" height="520px" style="border:1px solid #000000;"></canvas>
 
 {% endblock %}

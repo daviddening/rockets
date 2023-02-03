@@ -46,18 +46,20 @@ const ROCKET_ID_TO_OBJ_MAP = [
 
 const staticBoard = staticBoardDB.map((row) => {
     return row.map((id) => {
-        return ROCKET_ID_TO_OBJ_MAP[id];
+        return {explosion: false, rockets: [ROCKET_ID_TO_OBJ_MAP[id]]};
     })
 });
 
 const tempDisplay = (nextBoard, movedObjects) => {
     nextBoard.forEach((row) => {
         row.forEach((col) => {
-            process.stdout.write(col ? tempDirectionArrowMap[col?.direction||0] : '_');
+            const rocket = col.rockets?.[0]
+            process.stdout.write(rocket ? tempDirectionArrowMap[rocket?.direction || 0] : '_');
+            process.stdout.write(col.explosion ?  'X' : ' ');
         });
         process.stdout.write('\n')
     })
     process.stdout.write('\n')
 }
 
-module.exports = { staticBoard, tempDisplay, DIR_CHANGE_MAP, ROCKET_ID_TO_OBJ_MAP, DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT };
+//export { staticBoard, tempDisplay, DIR_CHANGE_MAP, ROCKET_ID_TO_OBJ_MAP, DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT };

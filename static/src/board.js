@@ -31,13 +31,25 @@ function drawGrid(ctx) {
     ctx.stroke();
 }
 
-function drawPuzzle(ctx, board) {
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+async function drawPuzzle(ctx, board, movedRockets = []) {
+    // artificial wait to slow down display, until we get animation
+    await delay(200);
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
     ctx.font = "18px Arial";
 
     board.forEach((row, y) => {
-        row.forEach((rocket, x) => {
-            if (rocket) {
-                ctx.fillText("*", x*ss+50+p, y*ss+50+p);
+        row.forEach((square, x) => {
+            if (square?.rockets?.[0]) {
+                ctx.fillText("^", x*ss+50+p, y*ss+50+p);
+            }
+            if (square?.explosion) {
+                ctx.fillText("*", x*ss+60+p, y*ss+50+p);
             }
         })
     })
@@ -49,4 +61,5 @@ function drawBoard() {
 
     drawGrid(ctx);
     drawPuzzle(ctx, staticBoard);
+    return ctx;
 }
