@@ -1,21 +1,23 @@
 //import './boardUtils.js';
 // Square size
-var ss = 100.0;
+const boardRows = 5;
+const boardColumns = 5;
 // Board width
-var bw = 501;
+var bw = 500;
 // Board height
-var bh = 501;
-// Padding
-var p = 10;
+var bh = 500;
 
-function drawGrid(ctx) {
+function drawGrid(ctx, rows, columns) {
+    const squareWidth = bw / columns;
+    const squareHeight = bh / rows;
+
     ctx.beginPath();
-    for (var x = 100.5; x <= bw-100; x += ss) {
+    for (var x = (squareWidth + 0.5); x <= bw; x += squareWidth) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, bh);
     }
 
-    for (var x = 100.5; x <= bh-100; x += ss) {
+    for (var x = (squareHeight + 0.5); x <= bh; x += squareHeight) {
         ctx.moveTo(0, x);
         ctx.lineTo(bw, x);
     }
@@ -24,7 +26,10 @@ function drawGrid(ctx) {
 }
 
 
-function drawPuzzle(ctx, board) {
+function drawPuzzle(ctx, board, rows, columns) {
+    const squareWidth = bw / columns;
+    const squareHeight = bh / rows;
+    const imageSize = (squareHeight * 0.75);
     var rocketImage = new Image();
     rocketImage.src = 'static/images/rocket.png';
 
@@ -32,7 +37,7 @@ function drawPuzzle(ctx, board) {
     board.forEach((row, y) => {
         row.forEach((rocket, x) => {
             if (rocket) {
-                ctx.drawImage(rocketImage, x*ss+12, y*ss+12, 75, 75);
+                ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
             }
         })
     })
@@ -43,6 +48,6 @@ function drawBoard() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
 
-    drawGrid(ctx);
-    drawPuzzle(ctx, staticBoard);
+    drawGrid(ctx, boardRows, boardColumns);
+    drawPuzzle(ctx, staticBoard, boardRows, boardColumns);
 }
