@@ -36,7 +36,7 @@ function delay(time) {
 }
 
 async function drawPuzzle(ctx, board, movedRockets = []) {
-    // artificial wait to slow down display, until we get animation
+    // TODO temporary artificial wait to slow down display, until we get animation
     await delay(200);
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);

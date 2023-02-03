@@ -8,7 +8,10 @@
         document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('DOMContentLoaded');
                 const ctx = drawBoard();
-                resolveMove({x: 2, y: 0}, staticBoard, ctx, drawPuzzle)
+                const button = document.getElementsByClassName('igniteButton')[0];
+                button.addEventListener('click', () => {
+                        resolveMove({x: 2, y: 0}, staticBoard, ctx, drawPuzzle)
+                });
         });
 </script>
 {% endblock %}
@@ -22,9 +25,10 @@ Rockets!
 
 <div>
         <h1>{{ nickname }}</h1>
+        <button class="igniteButton">Ignite 2, 0</button>
 </div>
 
-//<button onClick="">Ignite 0, 0</button>
+
 <canvas id="canvas" width="520px" height="520px" style="border:1px solid #000000;"></canvas>
 
 {% endblock %}
