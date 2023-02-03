@@ -10,12 +10,12 @@ var p = 10;
 
 function drawGrid(ctx) {
     ctx.beginPath();
-    for (var x = 0; x <= bw; x += ss) {
+    for (var x = 100.5; x <= bw-100; x += ss) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, bh);
     }
 
-    for (var x = 0; x <= bh; x += ss) {
+    for (var x = 100.5; x <= bh-100; x += ss) {
         ctx.moveTo(0, x);
         ctx.lineTo(bw, x);
     }
