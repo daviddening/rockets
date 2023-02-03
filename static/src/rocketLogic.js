@@ -1,7 +1,3 @@
-// RUN with `node rocketLogic.js`
-//const utils = require('./boardUtils.js');
-
-//const { DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, ROCKET_ID_TO_OBJ_MAP} = utils;
 const DEBUG = false;
 const debugLog = (log) => {
     if (DEBUG) {
@@ -9,6 +5,33 @@ const debugLog = (log) => {
     }
 }
 
+/**
+ * lightRocket takes a rocket and 'lights' it, converts it into one or more active rockets
+ *
+ * @param {object} position, {x, y}
+ * @param {object} rocket
+ *
+ *  @return array[object] array of rocket objects
+ */
+const lightRocket = (position, hitRocket) => {
+    const {x, y} = position
+    var rockets = []
+    switch (hitRocket.type) {
+
+        case 'double':
+            if (hitRocket.direction == DIRECTION_UP) {
+                rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
+            } else {
+                rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
+            }
+            break
+        case 'single':
+        default: {
+            rockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
+        }
+    }
+    return rockets;
+}
 
 /**
  * Uploads an array of attachments to the respective service.
@@ -23,7 +46,7 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
     let activeRockets = [];
     const startRocket = board[initialPosition.y][initialPosition.x]?.rockets?.[0];
     if (startRocket) {
-        activeRockets.push({ rocket: startRocket, initialPosition });
+        activeRockets = lightRocket(initialPosition, startRocket);
     }
 
     while (activeRockets.length) {
@@ -90,33 +113,12 @@ const moveRockets = (board, activeRockets) => {
         // TODO: here we could do additional work, like special rockets that go in two, three, directions, or don't fire at all
 
         if (hitRocket) {
-            var rockets = []
-            switch (hitRocket.type) {
-
-                case 'double':
-                    if (hitRocket.direction == DIRECTION_UP) {
-                        rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
-                    } else {
-                        rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
-                    }
-                    break
-                case 'single':
-                default: {
-                    rockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
-                }
-            }
-            return rockets;
+            return lightRocket({x, y}, hitRocket);
         }
         return { initialPosition: { x, y }, rocket: moveRocket.rocket };
     }).flat()
 
+    debugLog(newActiveRockets);
+    debugLog(movedRockets);
     return { movedRockets, newActiveRockets };
 }
-
-/*
-// Display initial board
-utils.tempDisplay(utils.staticBoard, []);
-const initialPosition = { x: 4, y: 0 };
-// Resolve a move that sets off a rocket at 4,0
-resolveMove(initialPosition, utils.staticBoard, utils.tempDisplay);
-*/
