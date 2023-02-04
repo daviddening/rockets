@@ -37,7 +37,7 @@ function drawPuzzle(ctx, board, rows, columns) {
     board.forEach((row, y) => {
         row.forEach((rocket, x) => {
             if (rocket) {
-                ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                 ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
             }
         })
     })
