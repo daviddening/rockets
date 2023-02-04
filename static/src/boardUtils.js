@@ -27,7 +27,7 @@ const tempDirectionArrowMap = [
 // Y
 
 const staticBoardDB = [
-    [3, 0, 0, 0, 4],
+    [3, 0, 6, 0, 4],
     [2, 0, 0, 3, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
@@ -36,15 +36,30 @@ const staticBoardDB = [
 
 const ROCKET_ID_TO_OBJ_MAP = [
     null,
-    { direction: DIRECTION_UP },
-    { direction: DIRECTION_RIGHT },
-    { direction: DIRECTION_DOWN },
-    { direction: DIRECTION_LEFT },
+    { type: 'single', direction: DIRECTION_UP },
+    { type: 'single', direction: DIRECTION_RIGHT },
+    { type: 'single', direction: DIRECTION_DOWN },
+    { type: 'single', direction: DIRECTION_LEFT },
+    { type: 'double', direction: DIRECTION_UP },
+    { type: 'double', direction: DIRECTION_RIGHT },
 ];
 
 const staticBoard = staticBoardDB.map((row) => {
     return row.map((id) => {
-        return ROCKET_ID_TO_OBJ_MAP[id];
+        return {explosion: false, rockets: [ROCKET_ID_TO_OBJ_MAP[id]]};
     })
 });
 
+const tempDisplay = (nextBoard, movedObjects) => {
+    nextBoard.forEach((row) => {
+        row.forEach((col) => {
+            const rocket = col.rockets?.[0]
+            process.stdout.write(rocket ? tempDirectionArrowMap[rocket?.direction || 0] : '_');
+            process.stdout.write(col.explosion ?  'X' : ' ');
+        });
+        process.stdout.write('\n')
+    })
+    process.stdout.write('\n')
+}
+
+//export { staticBoard, tempDisplay, DIR_CHANGE_MAP, ROCKET_ID_TO_OBJ_MAP, DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT };
