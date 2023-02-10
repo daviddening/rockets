@@ -32,6 +32,7 @@ const lightRocket = (position, hitRocket) => {
     }
     return rockets;
 }
+
 /**
  * Reset Explosions - set all explosions false
  * @param {any[]} board
@@ -82,8 +83,8 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
  */
 
 const isMoveOnTheBoard = (board, position) => {
-    const maxX = board.length - 1;
-    const maxY = board[0].length - 1;
+    const maxY = board.length - 1;
+    const maxX = board[0].length - 1;
     //debugLog(`checking on board x: ${position.x} y: ${position.y}`);
     return !(position.x < 0 || position.y < 0 || position.x > maxX || position.y > maxY);
 }
@@ -104,29 +105,30 @@ const moveRockets = (board, activeRockets) => {
     })
 
     const newActiveRockets = movedRockets.filter((moveRocket) => {
-        const { endPosition } = moveRocket;
-        return isMoveOnTheBoard(board, endPosition)
+        const { startPosition } = moveRocket;
+        return isMoveOnTheBoard(board, startPosition)
     }).map((moveRocket) => {
         const { startPosition, endPosition: { x, y } } = moveRocket;
-        const hitRocket = board[y][x]?.rockets[0];
-        debugLog(moveRocket);
 
-        // TODO put a moving rocket on the board!
-        if (hitRocket) {
-            debugLog('Hit a rocket')
-            debugLog(hitRocket);
-            board[y][x].explosion = true;
-        } else {
-            board[y][x].rockets = [moveRocket.rocket];
+         // clean up old rocket position
+         board[startPosition.y][startPosition.x].rockets = [];
+
+         // is rocket NOT flying off the board
+        if (isMoveOnTheBoard(board, { x, y })) {
+            const hitRocket = board[y][x]?.rockets[0];
+            debugLog(moveRocket);
+
+            // TODO put a moving rocket on the board!
+            if (hitRocket) {
+                debugLog('Hit a rocket')
+                debugLog(hitRocket);
+                board[y][x].explosion = true;
+                return lightRocket({ x, y }, hitRocket);
+            } else {
+                board[y][x].rockets = [moveRocket.rocket];
+            }
         }
-        // clean up old rocket position
-        board[startPosition.y][startPosition.x].rockets = [];
 
-        // TODO: here we could do additional work, like special rockets that go in two, three, directions, or don't fire at all
-
-        if (hitRocket) {
-            return lightRocket({ x, y }, hitRocket);
-        }
         return { initialPosition: { x, y }, rocket: moveRocket.rocket };
     }).flat()
 
