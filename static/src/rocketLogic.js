@@ -14,7 +14,7 @@ const debugLog = (log) => {
  *  @return array[object] array of rocket objects
  */
 const lightRocket = (position, hitRocket) => {
-    const {x, y} = position
+    const { x, y } = position
     var rockets = []
     switch (hitRocket.type) {
 
@@ -31,6 +31,18 @@ const lightRocket = (position, hitRocket) => {
         }
     }
     return rockets;
+}
+/**
+ * Reset Explosions - set all explosions false
+ * @param {any[]} board
+ * @return
+ */
+const resetExplosions = (board) => {
+    board.forEach((row) => {
+        row.forEach((square) => {
+            square.explosion = false;
+        })
+    })
 }
 
 /**
@@ -54,7 +66,7 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
 
         activeRockets = newActiveRockets;
         await updateBoard(ctx, board);
-        // reset explosions
+        resetExplosions(board)
     }
 
     await updateBoard(ctx, board, [])
@@ -113,7 +125,7 @@ const moveRockets = (board, activeRockets) => {
         // TODO: here we could do additional work, like special rockets that go in two, three, directions, or don't fire at all
 
         if (hitRocket) {
-            return lightRocket({x, y}, hitRocket);
+            return lightRocket({ x, y }, hitRocket);
         }
         return { initialPosition: { x, y }, rocket: moveRocket.rocket };
     }).flat()
