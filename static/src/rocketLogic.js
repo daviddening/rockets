@@ -11,26 +11,26 @@ const debugLog = (log) => {
  * @param {object} position, {x, y}
  * @param {object} rocket
  *
- *  @return array[object] array of rocket objects
+ *  @return array[object] array of moving rocket objects
  */
 const lightRocket = (position, hitRocket) => {
     const { x, y } = position
-    var rockets = []
+    var movingRockets = []
     switch (hitRocket.type) {
 
         case 'double':
             if (hitRocket.direction == DIRECTION_UP) {
-                rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
+                movingRockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_UP] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_DOWN] }]
             } else {
-                rockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
+                movingRockets = [{ initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_RIGHT] }, { initialPosition: { x, y }, rocket: ROCKET_ID_TO_OBJ_MAP[DIRECTION_LEFT] }]
             }
             break
         case 'single':
         default: {
-            rockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
+            movingRockets = [{ initialPosition: { x, y }, rocket: hitRocket }]
         }
     }
-    return rockets;
+    return movingRockets;
 }
 
 /**
@@ -90,6 +90,32 @@ const isMoveOnTheBoard = (board, position) => {
     return !(position.x < 0 || position.y < 0 || position.x > maxX || position.y > maxY);
 }
 
+const resolveRocketMoveOnBoard = (board, moveRocket) =>{
+    const { startPosition, endPosition: { x, y } } = moveRocket;
+
+    // clean up old rocket position
+    board[startPosition.y][startPosition.x].rockets = [];
+
+    var movingRockets = [{ initialPosition: moveRocket.endPosition, rocket: moveRocket.rocket }];
+    var litRockets = null
+     // is rocket NOT flying off the board
+     if (!isMoveOnTheBoard(board, { x, y })) {
+        return [];
+    }
+        const hitRocket = board[y][x]?.rockets[0];
+        debugLog(moveRocket);
+
+        if (hitRocket) {
+            debugLog('Hit a rocket')
+            debugLog(hitRocket);
+            board[y][x].explosion = true;
+            litRockets = lightRocket({ x, y }, hitRocket);
+        } else {
+            board[y][x].rockets = [moveRocket.rocket];
+        }
+
+        return litRockets ? litRockets : movingRockets;
+}
 /*
 *  moveRocket updates board positions, and activeRockets, returns a list of changed rocket positions
  * @param {array} board or rocket objects { direction}
@@ -105,32 +131,13 @@ const moveRockets = (board, activeRockets) => {
         return { startPosition: { x, y }, endPosition: { x: endX, y: endY }, rocket }
     })
 
-    const newActiveRockets = movedRockets.filter((moveRocket) => {
+    const rocketsOnBoard = movedRockets.filter((moveRocket) => {
         const { startPosition } = moveRocket;
         return isMoveOnTheBoard(board, startPosition)
-    }).map((moveRocket) => {
-        const { startPosition, endPosition: { x, y } } = moveRocket;
-
-        // clean up old rocket position
-        board[startPosition.y][startPosition.x].rockets = [];
-
-        // is rocket NOT flying off the board
-        if (isMoveOnTheBoard(board, { x, y })) {
-            const hitRocket = board[y][x]?.rockets[0];
-            debugLog(moveRocket);
-
-            // TODO put a moving rocket on the board!
-            if (hitRocket) {
-                debugLog('Hit a rocket')
-                debugLog(hitRocket);
-                board[y][x].explosion = true;
-                return lightRocket({ x, y }, hitRocket);
-            } else {
-                board[y][x].rockets = [moveRocket.rocket];
-            }
-        }
-
-        return { initialPosition: { x, y }, rocket: moveRocket.rocket };
+    })
+    const newActiveRockets = rocketsOnBoard.map((moveRocket) => {
+        movingRockets = resolveRocketMoveOnBoard(board, moveRocket)
+        return movingRockets;
     }).flat()
 
     debugLog(newActiveRockets);
