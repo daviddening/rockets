@@ -7,6 +7,9 @@ var bw = 500;
 // Board height
 var bh = 500;
 
+var rocketImage = new Image();
+
+
 function drawGrid(ctx, board) {
     const columns = board.length;
     const rows = board[0].length;
@@ -32,10 +35,6 @@ function delay(time) {
 }
 
 async function drawPuzzle(ctx, board, movedRockets = []) {
-    // TODO temporary artificial wait to slow down display, until we get animation
-    await delay(200);
-
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     ctx.font = "18px Arial";
 
@@ -44,13 +43,13 @@ async function drawPuzzle(ctx, board, movedRockets = []) {
     const squareWidth = bw / columns;
     const squareHeight = bh / rows;
     const imageSize = (squareHeight * 0.75);
-    var rocketImage = new Image();
-    rocketImage.src = 'static/images/rocket.png';
 
-    rocketImage.onload = function () {
-        board.forEach((row, y) => {
-            row.forEach((square, x) => {
-                const rocket = square.rockets[0];
+
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    board.forEach((row, y) => {
+        row.forEach((square, x) => {
+            square.rockets.forEach((rocket) => {
                 if (rocket) {
                     ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                 }
@@ -59,7 +58,10 @@ async function drawPuzzle(ctx, board, movedRockets = []) {
                 }
             })
         })
-    }
+    })
+
+    // TODO temporary artificial wait to slow down display, until we get animation
+    await delay(200);
 }
 
 function drawBoard() {
@@ -67,6 +69,9 @@ function drawBoard() {
     var ctx = canvas.getContext("2d");
 
     drawGrid(ctx, staticBoard);
-    drawPuzzle(ctx, staticBoard);
+    rocketImage.src = 'static/images/rocket.png';
+    rocketImage.onload = function () {
+        drawPuzzle(ctx, staticBoard);
+    }
     return ctx;
 }

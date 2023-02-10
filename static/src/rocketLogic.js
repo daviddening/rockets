@@ -60,6 +60,7 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
     const startRocket = board[initialPosition.y][initialPosition.x]?.rockets?.[0];
     if (startRocket) {
         activeRockets = lightRocket(initialPosition, startRocket);
+        board[initialPosition.y][initialPosition.x].rockets = activeRockets.map((movingRocket) => movingRocket.rocket)
     }
 
     while (activeRockets.length) {
@@ -110,10 +111,10 @@ const moveRockets = (board, activeRockets) => {
     }).map((moveRocket) => {
         const { startPosition, endPosition: { x, y } } = moveRocket;
 
-         // clean up old rocket position
-         board[startPosition.y][startPosition.x].rockets = [];
+        // clean up old rocket position
+        board[startPosition.y][startPosition.x].rockets = [];
 
-         // is rocket NOT flying off the board
+        // is rocket NOT flying off the board
         if (isMoveOnTheBoard(board, { x, y })) {
             const hitRocket = board[y][x]?.rockets[0];
             debugLog(moveRocket);
