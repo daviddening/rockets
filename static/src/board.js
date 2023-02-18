@@ -8,6 +8,7 @@ var bw = 500;
 var bh = 500;
 
 var rocketImage = new Image();
+var explosionImage = new Image();
 
 
 function drawGrid(ctx, board) {
@@ -37,7 +38,6 @@ function delay(time) {
 async function drawPuzzle(ctx, board, movedRockets = []) {
 
     ctx.font = "18px Arial";
-
     const columns = board.length;
     const rows = board[0].length;
     const squareWidth = bw / columns;
@@ -54,6 +54,7 @@ async function drawPuzzle(ctx, board, movedRockets = []) {
                     ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                 }
                 if (square?.explosion) {
+                    ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                     console.log(`explosion ${x} ${y}`);
                 }
             })
@@ -70,8 +71,11 @@ function drawBoard() {
 
     drawGrid(ctx, staticBoard);
     rocketImage.src = 'static/images/rocket.png';
+    explosionImage.src = 'static/images/explosion.png';
     rocketImage.onload = function () {
-        drawPuzzle(ctx, staticBoard);
+        explosionImage.onload = function () {
+            drawPuzzle(ctx, staticBoard);
+        }
     }
     return ctx;
 }
