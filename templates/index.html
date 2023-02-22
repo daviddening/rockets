@@ -6,12 +6,8 @@
 <script src="../static/src/rocketLogic.js"></script>
 <script type="application/javascript" language="javascript">
         document.addEventListener('DOMContentLoaded', (event) => {
-                console.log('DOMContentLoaded');
-                const ctx = drawBoard();
-                const button = document.getElementsByClassName('igniteButton')[0];
-                button.addEventListener('click', () => {
-                        resolveMove({x: 2, y: 0}, staticBoard, drawPuzzle)
-                });
+                drawBoard();
+                igniter();
         });
 </script>
 {% endblock %}
