@@ -55,7 +55,7 @@ const resetExplosions = (board) => {
  * @return empty
  */
 
-const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
+const resolveMove = async (initialPosition, board, updateBoard) => {
     let activeRockets = [];
     const startRocket = board[initialPosition.y][initialPosition.x]?.rockets?.[0];
     if (startRocket) {
@@ -68,7 +68,7 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
         //debugLog(`movedRockets: ${movedRockets} newActiveRockets: ${newActiveRockets}`);
         debugLog()
         activeRockets = newActiveRockets;
-        await updateBoard(ctx, board);
+        await updateBoard(board);
         //inside the ‘updateBoard’ function.
         //1) animate rocket, wait for it to complete
         //2) clear board
@@ -76,7 +76,7 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
         resetExplosions(board)
     }
 
-    await updateBoard(ctx, board, [])
+    await updateBoard(board, [])
     return;
 }
 
