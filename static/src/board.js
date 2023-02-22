@@ -9,18 +9,24 @@ var bh = 500;
 
 var rocketImage = new Image();
 var explosionImage = new Image();
-var board = staticBoard;
+rocketImage.src = 'static/images/rocket.png';
+explosionImage.src = 'static/images/explosion.png';
 
+var board = staticBoard;
+let boardsAndMoves = [];
+let boardAndMoves = null;
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 let raf;
+
+let frameCounter = 0;
 
 function igniter() {
     console.log('DOMContentLoaded');
     const button = document.getElementsByClassName('igniteButton')[0];
     button.addEventListener('click', () => {
         window.cancelAnimationFrame(raf);
-        resolveMove({x: 2, y: 0}, staticBoard, drawPuzzle)
+        resolveMove({ x: 2, y: 0 }, staticBoard, drawPuzzle)
     });
 }
 
@@ -48,15 +54,23 @@ function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time));
 }
 
-async function drawPuzzle(updatedBoard, movedRockets = []) {
-    board = updatedBoard;
+async function drawPuzzle(updatedBoards) {
+    boardsAndMoves = updatedBoards;
     window.requestAnimationFrame(draw);
-    // TODO temporary artificial wait to slow down display, until we get animation
-    await delay(200);
 }
 
 async function draw() {
+    if (!boardAndMoves) {
+        if (boardsAndMoves.length == 0) {
+            window.cancelAnimationFrame(raf);
+            return;
+        }
+        boardAndMoves = boardsAndMoves.shift();
+    }
+
     ctx.font = "18px Arial";
+    const { board, movedRockets } = boardAndMoves;
+
     const columns = board.length;
     const rows = board[0].length;
     const squareWidth = bw / columns;
@@ -67,7 +81,7 @@ async function draw() {
     board.forEach((row, y) => {
         row.forEach((square, x) => {
             square.rockets.forEach((rocket) => {
-                if (rocket) {
+                if (rocket && !rocket.moved) {
                     ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                 }
                 if (square?.explosion) {
@@ -78,15 +92,24 @@ async function draw() {
         })
     })
 
-   raf=window.requestAnimationFrame(draw);
+    console.log('movedRockets', movedRockets);
+    // movedRockets
+    // ATTN: Ben animate here
+    // for each rocket, move it 1/30th(or some other number) between its initial and end positions  (a movedRocket has  { startPosition: {x ,y}, endPosition: { x, y } })
+    // after the loop increment frameCounter;
+    // if frameCounter == 30, reset frameCounter and set boardAndMoves equal to null
+    boardAndMoves = null;
+    // TODO temporary artificial wait to slow down display, until we get animation
+    await delay(200);
+    raf = window.requestAnimationFrame(draw);
 }
 
 function drawBoard() {
     drawGrid(staticBoard);
-    rocketImage.src = 'static/images/rocket.png';
-    explosionImage.src = 'static/images/explosion.png';
 
-    raf=window.requestAnimationFrame(draw);
-
+    boardsAndMoves = [{ board: staticBoard, movedRockets: [] }]
+    rocketImage.onload = function () {
+        raf = window.requestAnimationFrame(draw);
+    }
     return ctx;
 }
