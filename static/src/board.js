@@ -31,8 +31,8 @@ function igniter() {
 }
 
 function drawGrid(board) {
-    const columns = board.length;
-    const rows = board[0].length;
+    const rows = board.length;
+    const columns = board[0].length;
     const squareWidth = bw / columns;
     const squareHeight = bh / rows;
 
@@ -71,8 +71,8 @@ async function draw() {
     ctx.font = "18px Arial";
     const { board, movedRockets } = boardAndMoves;
 
-    const columns = board.length;
-    const rows = board[0].length;
+    const rows = board.length;
+    const columns = board[0].length;
     const squareWidth = bw / columns;
     const squareHeight = bh / rows;
     const imageSize = (squareHeight * 0.75);
@@ -100,7 +100,7 @@ async function draw() {
     // if frameCounter == 30, reset frameCounter and set boardAndMoves equal to null
     boardAndMoves = null;
     // TODO temporary artificial wait to slow down display, until we get animation
-    await delay(200);
+    await delay(1000);
     raf = window.requestAnimationFrame(draw);
 }
 

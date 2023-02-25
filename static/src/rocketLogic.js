@@ -80,10 +80,6 @@ const resolveMove = async (initialPosition, board, updateBoard) => {
         debugLog()
         activeRockets = newActiveRockets;
         boardsAndMoves.push(JSON.parse(JSON.stringify({ board, movedRockets })));
-        //inside the ‘updateBoard’ function.
-        //1) animate rocket, wait for it to complete
-        //2) clear board
-        //3) draw rockets end position and explosions…
         resetExplosions(board)
         resetMoved(board)
     }
