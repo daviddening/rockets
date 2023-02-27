@@ -78,6 +78,7 @@ async function draw() {
     const imageSize = (squareHeight * 0.75);
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    drawGrid(staticBoard);
     board.forEach((row, y) => {
         row.forEach((square, x) => {
             square.rockets.forEach((rocket) => {
@@ -105,6 +106,7 @@ async function draw() {
     }
     else {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        drawGrid(staticBoard);
         movedRockets.forEach((rocket) => {
             ctx.drawImage
             (rocketImage,
