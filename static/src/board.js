@@ -98,7 +98,38 @@ async function draw() {
     // for each rocket, move it 1/30th(or some other number) between its initial and end positions  (a movedRocket has  { startPosition: {x ,y}, endPosition: { x, y } })
     // after the loop increment frameCounter;
     // if frameCounter == 30, reset frameCounter and set boardAndMoves equal to null
-    boardAndMoves = null;
+    if (movedRockets.length == 0 || frameCounter > 30) {
+        boardAndMoves = null;
+        frameCounter = 0;
+        window.cancelAnimationFrame(raf);
+    }
+    else {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        movedRockets.forEach((rocket) => {
+            ctx.drawImage
+            (rocketImage,
+            ((rocket.startPosition.x + ((((rocket.endPosition.x - rocket.startPosition.y) / 30) * frameCounter) * squareWidth)) + (squareWidth / columns)),
+            ((rocket.startPosition.y + ((((rocket.endPosition.y - rocket.startPosition.y) / 30) * frameCounter) * squareHeight)) + (squareHeight / rows)),
+            imageSize, imageSize);
+            console.log('rocket.startPosition.x: ', rocket.startPosition.x);
+        })
+        board.forEach((row, y) => {
+            row.forEach((square, x) => {
+                square.rockets.forEach((rocket) => {
+                    if (rocket && !rocket.moved) {
+                        ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                    }
+                    if (square?.explosion) {
+                        ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        console.log(`explosion ${x} ${y}`);
+                    }
+                })
+            })
+        })
+        frameCounter++;
+        requestAnimationFrame(draw);
+    }
+
     // TODO temporary artificial wait to slow down display, until we get animation
     await delay(1000);
     raf = window.requestAnimationFrame(draw);
