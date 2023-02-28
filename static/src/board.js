@@ -92,7 +92,6 @@ async function draw() {
         })
     })
     function animate() {
-        window.requestAnimationFrame(animate);
         frame = window.requestAnimationFrame(animate);
         const imageSize = (squareHeight * 0.75);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
