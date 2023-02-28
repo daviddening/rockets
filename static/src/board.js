@@ -157,7 +157,35 @@ async function draw() {
 
     }
     window.requestAnimationFrame(animate);
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // drawGrid(staticBoard);
+    // board.forEach((row, y) => {
+    //     row.forEach((square, x) => {
+    //         square.rockets.forEach((rocket) => {
+    //             if (rocket && !rocket.moved) {
+    //                 ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+    //             }
+    //             if (square?.explosion) {
+    //                 ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+    //                 console.log(`explosion ${x} ${y}`);
+    //             }
+    //         })
+    //     })
+    // })
+    console.log('movedRockets', movedRockets);
+    // movedRockets
+    // ATTN: Ben animate here
+    // for each rocket, move it 1/30th(or some other number) between its initial and end positions  (a movedRocket has  { startPosition: {x ,y}, endPosition: { x, y } })
+    // after the loop increment frameCounter;
+    // if frameCounter == 30, reset frameCounter and set boardAndMoves equal to null
+    boardAndMoves = null;
+    // TODO temporary artificial wait to slow down display, until we get animation
+    // await delay(200);
+    raf = window.requestAnimationFrame(draw);
 }
+
+
+
 
 
 
