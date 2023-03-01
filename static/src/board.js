@@ -61,6 +61,7 @@ async function drawPuzzle(updatedBoards) {
 
 async function draw() {
     var raf = requestAnimationFrame(draw);
+
     if (!boardAndMoves) {
         if (boardsAndMoves.length == 0) {
             window.cancelAnimationFrame(raf);
@@ -69,7 +70,6 @@ async function draw() {
         boardAndMoves = boardsAndMoves.shift();
     }
 
-    ctx.font = "18px Arial";
     const { board, movedRockets } = boardAndMoves;
 
     const columns = board.length;
@@ -78,7 +78,9 @@ async function draw() {
     const squareHeight = bh / rows;
     const imageSize = (squareHeight * 0.75);
 
+    // Draw the grid, rockets that aren't moving and explosions
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    drawGrid(staticBoard);
     board.forEach((row, y) => {
         row.forEach((square, x) => {
             square.rockets.forEach((rocket) => {
@@ -92,96 +94,36 @@ async function draw() {
             })
         })
     })
-    function animate() {
-        var frame = window.requestAnimationFrame(animate);
-        // const imageSize = (squareHeight * 0.75);
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        // drawGrid(staticBoard);
-        movedRockets.forEach((mover) => {
-            let rocketStart_x = (mover.startPosition.x * squareWidth) - (squareWidth / 2);
-            let rocketStart_y = (mover.startPosition.y * squareHeight) - (squareHeight / 2);
-            if (mover.endPosition.x < mover.startPosition.x) {
-                if (rocketStart_x < (mover.endPosition.x * squareWidth) - (squareWidth / 2)) {
-                    cancelAnimationFrame(frame);
-                    return;
-                }
-                else {
-                    rocketStart_x += -1;
-                    ctx.drawImage(rocketImage, rocketStart_x, rocketStart_y, imageSize, imageSize);
-                }
-            }
-            if (mover.endPosition.x > mover.startPosition.x) {
-                if (rocketStart_x > (mover.endPosition.x * squareWidth) - (squareWidth / 2)) {
-                    cancelAnimationFrame(frame);
-                    return;
-                }
-                else {
-                    rocketStart_x++;
-                    ctx.drawImage(rocketImage, rocketStart_x, rocketStart_y, imageSize, imageSize);
-                }
-            }
-            if (mover.endPosition.y < mover.startPosition.y) {
-                if (rocketStart_y < (mover.endPosition.y * squareHeight) - (squareHeight / 2)) {
-                    cancelAnimationFrame(frame);
-                    return;
-                }
-                else {
-                rocketStart_y += -1;
-                ctx.drawImage(rocketImage, rocketStart_x, rocketStart_y, imageSize, imageSize);
-                }
-            }
-            if (mover.endPosition.y > mover.startPosition) {
-                if (rocketStart_y < (mover.endPosition.y * squareHeight) - (squareHeight / 2)) {
-                    cancelAnimationFrame(frame);
-                    return;
-                }
-                else {
-                rocketStart_y++;
-                ctx.drawImage(rocketImage, rocketStart_x, rocketStart_y, imageSize, imageSize);
-                }
-            }
-        })
-        board.forEach((row, y) => {
-            row.forEach((square, x) => {
-                square.rockets.forEach((rocket) => {
-                    if (rocket && !rocket.moved) {
-                        ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                    }
-                    if (square?.explosion) {
-                        ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                        console.log(`explosion ${x} ${y}`);
-                    }
-                })
-            })
-        })
 
-    }
-    window.requestAnimationFrame(animate);
-    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    // drawGrid(staticBoard);
-    // board.forEach((row, y) => {
-    //     row.forEach((square, x) => {
-    //         square.rockets.forEach((rocket) => {
-    //             if (rocket && !rocket.moved) {
-    //                 ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-    //             }
-    //             if (square?.explosion) {
-    //                 ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-    //                 console.log(`explosion ${x} ${y}`);
-    //             }
-    //         })
-    //     })
-    // })
+    // Draw the moving rockets in their new position each loop until the loop ends
+    movedRockets.forEach((mover) => {
+        let rocketPos_x = (mover.startPosition.x * squareWidth) + (squareWidth / 2);
+        let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight / 2);
+        if (mover.endPosition.x < mover.startPosition.x) {
+            rocketPos_x -= frameCounter;
+            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
+        }
+        if (mover.endPosition.x > mover.startPosition.x) {
+            rocketPos_x += frameCounter;
+            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
+        }
+        if (mover.endPosition.y < mover.startPosition.y) {
+            rocketPos_y -= frameCounter;
+            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
+        }
+        if (mover.endPosition.y > mover.startPosition) {
+            rocketPos_y += frameCounter;
+            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
+        }
+    })
+    frameCounter += 2;
+
+    console.log('frameCounter', frameCounter);
     console.log('movedRockets', movedRockets);
-    // movedRockets
-    // ATTN: Ben animate here
-    // for each rocket, move it 1/30th(or some other number) between its initial and end positions  (a movedRocket has  { startPosition: {x ,y}, endPosition: { x, y } })
-    // after the loop increment frameCounter;
-    // if frameCounter == 30, reset frameCounter and set boardAndMoves equal to null
-    boardAndMoves = null;
-    // TODO temporary artificial wait to slow down display, until we get animation
-    // await delay(200);
-    raf = window.requestAnimationFrame(draw);
+    if (frameCounter == 100 || movedRockets.length == 0) {
+        boardAndMoves = null;
+        frameCounter = 0;
+    }
 }
 
 
