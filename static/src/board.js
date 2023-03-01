@@ -80,43 +80,40 @@ async function draw() {
 
     // Draw the grid, rockets that aren't moving and explosions
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    drawGrid(staticBoard);
+    // drawGrid(staticBoard);
     board.forEach((row, y) => {
         row.forEach((square, x) => {
             square.rockets.forEach((rocket) => {
                 if (rocket && !rocket.moved) {
                     ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                 }
-                if (square?.explosion) {
-                    ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                    console.log(`explosion ${x} ${y}`);
-                }
+                // if (square?.explosion) {
+                //     ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                //     console.log(`explosion ${x} ${y}`);
+                // }
             })
         })
     })
 
     // Draw the moving rockets in their new position each loop until the loop ends
     movedRockets.forEach((mover) => {
-        let rocketPos_x = (mover.startPosition.x * squareWidth) + (squareWidth * 0.25);
-        let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight * 0.25);
+        let rocketPos_x = (mover.startPosition.x * squareWidth) + (squareWidth * 0.2);
+        let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight * 0.2);
         if (mover.endPosition.x < mover.startPosition.x) {
             rocketPos_x -= frameCounter;
-            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
         if (mover.endPosition.x > mover.startPosition.x) {
             rocketPos_x += frameCounter;
-            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
         if (mover.endPosition.y < mover.startPosition.y) {
             rocketPos_y -= frameCounter;
-            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
-        if (mover.endPosition.y > mover.startPosition) {
+        if (mover.endPosition.y > mover.startPosition.y) {
             rocketPos_y += frameCounter;
-            ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
+        ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
     })
-    frameCounter += 1;
+    frameCounter += 2;
 
     console.log('frameCounter', frameCounter);
     console.log('movedRockets', movedRockets);
