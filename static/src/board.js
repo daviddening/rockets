@@ -81,6 +81,7 @@ async function draw() {
     // Draw the grid, rockets that aren't moving and explosions
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     // drawGrid(staticBoard);
+    // I think this loop is slowing us down. Possible?
     board.forEach((row, y) => {
         row.forEach((square, x) => {
             square.rockets.forEach((rocket) => {
@@ -117,7 +118,7 @@ async function draw() {
 
     console.log('frameCounter', frameCounter);
     console.log('movedRockets', movedRockets);
-    if (frameCounter == 100 || movedRockets.length == 0) {
+    if (frameCounter == squareWidth || movedRockets.length == 0) {
         boardAndMoves = null;
         frameCounter = 0;
     }
