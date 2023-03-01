@@ -129,7 +129,7 @@ async function draw() {
 
 
 function drawBoard() {
-    drawGrid(staticBoard);
+    // drawGrid(staticBoard);
 
     boardsAndMoves = [{ board: staticBoard, movedRockets: [] }]
     rocketImage.onload = function () {
