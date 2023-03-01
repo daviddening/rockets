@@ -93,7 +93,7 @@ async function draw() {
             square.rockets.forEach((rocket) => {
                 if (rocket && !rocket.moved) {
                     console.log('rocket: ', rocket);
-                        // if (rocket.type = 'single') {
+                        if (rocket.type == 'single') {
                             if (rocket.direction == 1) {
                             ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                             }
@@ -106,17 +106,17 @@ async function draw() {
                             if (rocket.direction == 4) {
                                 ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                             }
-                        // }
-                        // if (rocket.type = 'double') {
-                        //     if (rocket.direction == 1) {
-                        //         ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns) + (squareWidth / 4), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                        //         ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns) - (squareWidth / 4), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                        //     }
-                        //     if (rocket.direction == 2) {
-                        //         ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows) + (squareHeight / 4), imageSize, imageSize);
-                        //         ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows) - (squareHeight / 4), imageSize, imageSize);
-                        //     }
-                        // }
+                        }
+                        if (rocket.type == 'double') {
+                            if (rocket.direction == 1) {
+                                ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                                ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                            }
+                            if (rocket.direction == 2) {
+                                ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                                ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                            }
+                        }
                 }
                 if (square?.explosion && frameCounter > 60 ) {
                     ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
