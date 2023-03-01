@@ -97,8 +97,8 @@ async function draw() {
 
     // Draw the moving rockets in their new position each loop until the loop ends
     movedRockets.forEach((mover) => {
-        let rocketPos_x = (mover.startPosition.x * squareWidth) + (squareWidth / 2);
-        let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight / 2);
+        let rocketPos_x = (mover.startPosition.x * squareWidth) + (squareWidth * 0.25);
+        let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight * 0.25);
         if (mover.endPosition.x < mover.startPosition.x) {
             rocketPos_x -= frameCounter;
             ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
@@ -116,7 +116,7 @@ async function draw() {
             ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
     })
-    frameCounter += 2;
+    frameCounter += 1;
 
     console.log('frameCounter', frameCounter);
     console.log('movedRockets', movedRockets);
