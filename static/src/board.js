@@ -14,7 +14,7 @@ var rocketImage = new Image();
 var explosionImage = new Image();
 
 unlitSheet.src = 'static/images/unlit-400x100.png';
-litSheet.src = 'static/images/lit-800x100';
+litSheet.src = 'static/images/lit-800x100.png';
 rocketImage.src = 'static/images/rocket.png';
 explosionImage.src = 'static/images/explosion.png';
 
@@ -130,19 +130,39 @@ async function draw() {
         let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight * 0.2);
         if (mover.endPosition.x < mover.startPosition.x) {
             rocketPos_x -= frameCounter;
-            ctx.drawImage(litSheet, 600, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            if (frameCounter % 2 == 0) {
+                ctx.drawImage(litSheet, 600, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
+            else {
+                ctx.drawImage(litSheet, 700, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
         }
         if (mover.endPosition.x > mover.startPosition.x) {
             rocketPos_x += frameCounter;
-            ctx.drawImage(litSheet, 400, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            if (frameCounter % 2 == 0) {
+                ctx.drawImage(litSheet, 400, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
+            else {
+                ctx.drawImage(litSheet, 500, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
         }
         if (mover.endPosition.y < mover.startPosition.y) {
             rocketPos_y -= frameCounter;
-            ctx.drawImage(litSheet, 0, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            if (frameCounter % 2 == 0) {
+                ctx.drawImage(litSheet, 100, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
+            else {
+                ctx.drawImage(litSheet, 0, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
         }
         if (mover.endPosition.y > mover.startPosition.y) {
             rocketPos_y += frameCounter;
-            ctx.drawImage(litSheet, 0, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            if (frameCounter % 2 == 0) {
+                ctx.drawImage(litSheet, 200, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
+            else {
+                ctx.drawImage(litSheet, 300, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
+            }
         }
 
     })
