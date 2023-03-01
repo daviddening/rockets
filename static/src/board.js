@@ -7,8 +7,14 @@ var bw = 500;
 // Board height
 var bh = 500;
 
+var unlitSheet = new Image();
+var litSheet = new Image()
+
 var rocketImage = new Image();
 var explosionImage = new Image();
+
+unlitSheet.src = 'static/images/unlit-400x100.png';
+litSheet.src = 'static/images/lit-800x100';
 rocketImage.src = 'static/images/rocket.png';
 explosionImage.src = 'static/images/explosion.png';
 
@@ -50,9 +56,9 @@ function drawGrid(board) {
     ctx.stroke();
 }
 
-function delay(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
+// function delay(time) {
+//     return new Promise(resolve => setTimeout(resolve, time));
+// }
 
 async function drawPuzzle(updatedBoards) {
     boardsAndMoves = updatedBoards;
@@ -76,7 +82,7 @@ async function draw() {
     const rows = board[0].length;
     const squareWidth = bw / columns;
     const squareHeight = bh / rows;
-    const imageSize = (squareHeight * 0.75);
+    const imageSize = (squareHeight);
 
     // Draw the grid, rockets that aren't moving and explosions
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -86,12 +92,34 @@ async function draw() {
         row.forEach((square, x) => {
             square.rockets.forEach((rocket) => {
                 if (rocket && !rocket.moved) {
-                    ctx.drawImage(rocketImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                    console.log('rocket: ', rocket);
+                        if (rocket.type = 'single' && rocket.direction == 1) {
+                            ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                        if (rocket.type = 'single' && rocket.direction == 2) {
+                            ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                        if (rocket.type = 'single' && rocket.direction == 3) {
+                            ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                        if (rocket.type = 'single' && rocket.direction == 4) {
+                            ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+
+                        if (rocket.type = 'double' && rocket.direction == 1) {
+                            ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns) + (squareWidth / 4), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                            ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns) - (squareWidth / 4), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                        if (rocket.type = 'double' && rocket.direction == 2) {
+                            ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows) + (squareHeight / 4), imageSize, imageSize);
+                            ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows) - (squareHeight / 4), imageSize, imageSize);
+                        }
+
                 }
-                // if (square?.explosion) {
-                //     ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                //     console.log(`explosion ${x} ${y}`);
-                // }
+                if (square?.explosion && frameCounter > 60 ) {
+                    ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                    console.log(`explosion ${x} ${y}`);
+                }
             })
         })
     })
@@ -102,23 +130,28 @@ async function draw() {
         let rocketPos_y = (mover.startPosition.y * squareHeight) + (squareHeight * 0.2);
         if (mover.endPosition.x < mover.startPosition.x) {
             rocketPos_x -= frameCounter;
+            ctx.drawImage(litSheet, 600, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
         if (mover.endPosition.x > mover.startPosition.x) {
             rocketPos_x += frameCounter;
+            ctx.drawImage(litSheet, 400, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
         if (mover.endPosition.y < mover.startPosition.y) {
             rocketPos_y -= frameCounter;
+            ctx.drawImage(litSheet, 0, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
         if (mover.endPosition.y > mover.startPosition.y) {
             rocketPos_y += frameCounter;
+            ctx.drawImage(litSheet, 0, 0, 100, 100, rocketPos_x, rocketPos_y, imageSize, imageSize);
         }
-        ctx.drawImage(rocketImage, rocketPos_x, rocketPos_y, imageSize, imageSize);
+
     })
-    frameCounter += 2;
+    frameCounter += 3.5;
+
 
     console.log('frameCounter', frameCounter);
     console.log('movedRockets', movedRockets);
-    if (frameCounter == squareWidth || movedRockets.length == 0) {
+    if (frameCounter >= squareWidth || movedRockets.length == 0) {
         boardAndMoves = null;
         frameCounter = 0;
     }
@@ -133,8 +166,8 @@ function drawBoard() {
     // drawGrid(staticBoard);
 
     boardsAndMoves = [{ board: staticBoard, movedRockets: [] }]
-    rocketImage.onload = function () {
-        raf = window.requestAnimationFrame(draw);
-    }
+    unlitSheet.onload = function () {
+                raf = window.requestAnimationFrame(draw);
+            }
     return ctx;
 }
