@@ -46,6 +46,16 @@ const resetExplosions = (board) => {
     })
 }
 
+const resetMoved = (board) => {
+    board.forEach((row) => {
+        row.forEach((square) => {
+            square.rockets.forEach((rocket) => {
+                if (rocket) { rocket.moved = false }
+            });
+        })
+    })
+}
+
 /**
  * Uploads an array of attachments to the respective service.
  *
@@ -55,7 +65,8 @@ const resetExplosions = (board) => {
  * @return empty
  */
 
-const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
+const resolveMove = async (initialPosition, board, updateBoard) => {
+    let boardsAndMoves = []
     let activeRockets = [];
     const startRocket = board[initialPosition.y][initialPosition.x]?.rockets?.[0];
     if (startRocket) {
@@ -65,14 +76,16 @@ const resolveMove = async (initialPosition, board, ctx, updateBoard) => {
 
     while (activeRockets.length) {
         const { movedRockets, newActiveRockets } = moveRockets(board, activeRockets)
-
+        //debugLog(`movedRockets: ${movedRockets} newActiveRockets: ${newActiveRockets}`);
+        debugLog()
         activeRockets = newActiveRockets;
-        await updateBoard(ctx, board);
+        boardsAndMoves.push(JSON.parse(JSON.stringify({ board, movedRockets })));
         resetExplosions(board)
+        resetMoved(board)
     }
 
-    await updateBoard(ctx, board, [])
-    return;
+    boardsAndMoves.push(JSON.parse(JSON.stringify({ board, movedRockets: [] })));
+    updateBoard(boardsAndMoves);
 }
 
 /**
@@ -90,7 +103,7 @@ const isMoveOnTheBoard = (board, position) => {
     return !(position.x < 0 || position.y < 0 || position.x > maxX || position.y > maxY);
 }
 
-const resolveRocketMoveOnBoard = (board, moveRocket) =>{
+const resolveRocketMoveOnBoard = (board, moveRocket) => {
     const { startPosition, endPosition: { x, y } } = moveRocket;
 
     // clean up old rocket position
@@ -98,23 +111,24 @@ const resolveRocketMoveOnBoard = (board, moveRocket) =>{
 
     var movingRockets = [{ initialPosition: moveRocket.endPosition, rocket: moveRocket.rocket }];
     var litRockets = null
-     // is rocket NOT flying off the board
-     if (!isMoveOnTheBoard(board, { x, y })) {
+    // is rocket NOT flying off the board
+    if (!isMoveOnTheBoard(board, { x, y })) {
         return [];
     }
-        const hitRocket = board[y][x]?.rockets[0];
-        debugLog(moveRocket);
+    const hitRocket = board[y][x]?.rockets[0];
+    debugLog(moveRocket);
+    debugLog(hitRocket);
 
-        if (hitRocket) {
-            debugLog('Hit a rocket')
-            debugLog(hitRocket);
-            board[y][x].explosion = true;
-            litRockets = lightRocket({ x, y }, hitRocket);
-        } else {
-            board[y][x].rockets = [moveRocket.rocket];
-        }
+    if (hitRocket) {
+        debugLog('Hit a rocket')
+        debugLog(hitRocket);
+        board[y][x].explosion = true;
+        litRockets = lightRocket({ x, y }, hitRocket);
+    } else {
+        board[y][x].rockets = [{ ...moveRocket.rocket, moved: true }];
+    }
 
-        return litRockets ? litRockets : movingRockets;
+    return litRockets ? litRockets : movingRockets;
 }
 /*
 *  moveRocket updates board positions, and activeRockets, returns a list of changed rocket positions

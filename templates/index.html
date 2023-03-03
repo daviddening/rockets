@@ -6,12 +6,8 @@
 <script src="../static/src/rocketLogic.js"></script>
 <script type="application/javascript" language="javascript">
         document.addEventListener('DOMContentLoaded', (event) => {
-                console.log('DOMContentLoaded');
-                const ctx = drawBoard();
-                const button = document.getElementsByClassName('igniteButton')[0];
-                button.addEventListener('click', () => {
-                        resolveMove({x: 2, y: 0}, staticBoard, ctx, drawPuzzle)
-                });
+                drawBoard();
+                igniter();
         });
 </script>
 {% endblock %}
@@ -22,10 +18,12 @@ Rockets!
 
 
 {% block main %}
-
 <div>
-        <h1>{{ nickname }}</h1>
-        <button class="igniteButton">Ignite 2, 0</button>
+        <div class="infoHeader">
+                <h2 class="name">{{ nickname }}</h2>
+                <div class="scoreBox">SCORE: <b>0</b></div>
+</div>
+<button class="igniteButton">Ignite 2, 0</button>
 </div>
 
 <canvas id="canvas" width="500px" height="500px" style="border:1px solid black;"></canvas>
