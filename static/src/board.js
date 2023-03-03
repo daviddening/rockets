@@ -29,9 +29,21 @@ let frameCounter = 0;
 let score = 0;
 let chain = 0;
 
+function getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    console.log('x: ' + x + ' y: ' + y);
+}
+
 function igniter() {
     console.log('DOMContentLoaded');
     const button = document.getElementsByClassName('igniteButton')[0];
+    canvas.addEventListener('mousedown', function(e) {
+        getCursorPosition(canvas, e);
+    });
+
+
     button.addEventListener('click', () => {
         window.cancelAnimationFrame(raf);
         resolveMove({ x: 2, y: 0 }, staticBoard, updateBoard)
