@@ -26,13 +26,15 @@ var ctx = canvas.getContext("2d");
 let raf;
 
 let frameCounter = 0;
+let score = 0;
+let chain = 0;
 
 function igniter() {
     console.log('DOMContentLoaded');
     const button = document.getElementsByClassName('igniteButton')[0];
     button.addEventListener('click', () => {
         window.cancelAnimationFrame(raf);
-        resolveMove({ x: 2, y: 0 }, staticBoard, drawPuzzle)
+        resolveMove({ x: 2, y: 0 }, staticBoard, updateBoard)
     });
 }
 
@@ -56,13 +58,23 @@ function drawGrid(board) {
     ctx.stroke();
 }
 
-// function delay(time) {
-//     return new Promise(resolve => setTimeout(resolve, time));
-// }
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
 
-async function drawPuzzle(updatedBoards) {
+async function updateBoard(updatedBoards) {
     boardsAndMoves = updatedBoards;
     window.requestAnimationFrame(draw);
+}
+
+async function showScore() {
+    const scoreText = window.document.querySelector('.scoreBox > b');
+    // scoreText.style.animationPlayState='paused';
+    scoreText.style.animationName = 'none';
+    await delay(1);
+    scoreText.textContent = score
+    // scoreText.style.animationPlayState='running';
+    scoreText.style.animationName = 'flash';
 }
 
 async function draw() {
@@ -70,10 +82,20 @@ async function draw() {
 
     if (!boardAndMoves) {
         if (boardsAndMoves.length == 0) {
+            chain = 0;
             window.cancelAnimationFrame(raf);
             return;
         }
         boardAndMoves = boardsAndMoves.shift();
+        // count explosions
+        const explosions = boardAndMoves.board.reduce((e, r) => { const exp = r.reduce((ee, c) => { return c.explosion ? ee + 1 : ee }, 0); return e + exp }, 0)
+        if (explosions) {
+        // increase the chain
+        chain++;
+        // calculate score
+        score += chain*1000*explosions;
+        showScore();
+        }
     }
 
     const { board, movedRockets } = boardAndMoves;
@@ -93,32 +115,32 @@ async function draw() {
             square.rockets.forEach((rocket) => {
                 if (rocket && !rocket.moved) {
                     console.log('rocket: ', rocket);
-                        if (rocket.type == 'single') {
-                            if (rocket.direction == 1) {
+                    if (rocket.type == 'single') {
+                        if (rocket.direction == 1) {
                             ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                            }
-                            if (rocket.direction == 2) {
-                                ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                            }
-                            if (rocket.direction == 3) {
-                                ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                            }
-                            if (rocket.direction == 4) {
-                                ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                            }
                         }
-                        if (rocket.type == 'double') {
-                            if (rocket.direction == 1) {
-                                ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                                ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                            }
-                            if (rocket.direction == 2) {
-                                ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                                ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
-                            }
+                        if (rocket.direction == 2) {
+                            ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                         }
+                        if (rocket.direction == 3) {
+                            ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                        if (rocket.direction == 4) {
+                            ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                    }
+                    if (rocket.type == 'double') {
+                        if (rocket.direction == 1) {
+                            ctx.drawImage(unlitSheet, 100, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                            ctx.drawImage(unlitSheet, 0, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                        if (rocket.direction == 2) {
+                            ctx.drawImage(unlitSheet, 200, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                            ctx.drawImage(unlitSheet, 300, 0, 100, 100, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
+                        }
+                    }
                 }
-                if (square?.explosion && frameCounter > 60 ) {
+                if (square?.explosion && frameCounter > 60) {
                     ctx.drawImage(explosionImage, (x * squareWidth) + (squareWidth / columns), (y * squareHeight) + (squareHeight / rows), imageSize, imageSize);
                     console.log(`explosion ${x} ${y}`);
                 }
@@ -188,7 +210,7 @@ function drawBoard() {
 
     boardsAndMoves = [{ board: staticBoard, movedRockets: [] }]
     unlitSheet.onload = function () {
-                raf = window.requestAnimationFrame(draw);
-            }
+        raf = window.requestAnimationFrame(draw);
+    }
     return ctx;
 }
