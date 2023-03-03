@@ -1,5 +1,46 @@
 /* Size for brand */
-nav .navbar-brand
-{
+nav .navbar-brand {
     font-size: xx-large;
+}
+
+.infoHeader {
+    width: 500px;
+    display: inline-flex;
+}
+
+.name {
+    margin: auto;
+}
+
+.scoreBox {
+    width: 200px;
+    margin: auto 0;
+    border: 2px solid blue;
+    background: aliceblue;
+    color: red;
+    padding: 5px;
+    font-weight: 500;
+}
+
+.scoreBox>b {
+    width: 100px;
+    float: right;
+    text-align: right;
+    animation: flash linear .5s;
+}
+
+@-webkit-keyframes flash {
+	0% { opacity: 1; }
+	50% { opacity: .1; }
+	100% { opacity: 1; }
+}
+@keyframes flash {
+	0% { opacity: 1; }
+	50% { opacity: .1; }
+	100% { opacity: 1; }
+}
+
+.igniteButton {
+    margin: auto;
+    display: block;
 }
