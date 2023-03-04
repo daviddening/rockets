@@ -7,6 +7,7 @@ var bw = 500;
 // Board height
 var bh = 500;
 
+
 var unlitSheet = new Image();
 var litSheet = new Image()
 
@@ -25,24 +26,59 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 let raf;
 
+const rows = board.length;
+const columns = board[0].length;
+const squareWidth = bw / columns;
+const squareHeight = bh / rows;
+
 let frameCounter = 0;
 let score = 0;
 let chain = 0;
 
-function igniter() {
-    console.log('DOMContentLoaded');
-    const button = document.getElementsByClassName('igniteButton')[0];
-    button.addEventListener('click', () => {
-        window.cancelAnimationFrame(raf);
-        resolveMove({ x: 2, y: 0 }, staticBoard, updateBoard)
-    });
+function getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    const matchX = event.clientX - rect.left;
+    const matchY = event.clientY - rect.top;
+    console.log('x: ' + matchX + ' y: ' + matchY);
+    return {matchX, matchY};
 }
 
+//constant matchHead()
+
+function igniter() {
+    let matchPosition = {};
+    let matchSquare = {};
+    console.log('DOMContentLoaded');
+    // const button = document.getElementsByClassName('igniteButton')[0];
+    canvas.addEventListener('mousedown', function(e) {
+        matchPosition = getCursorPosition(canvas, e);
+        board.forEach((row, y) => {
+            if (matchPosition.matchY > y * squareHeight && matchPosition.matchY < (y * squareHeight) + squareHeight) {
+                row.forEach((square, x) => {
+                    if (matchPosition.matchX > x * squareWidth && matchPosition.matchX < (x * squareWidth) + squareWidth) {
+                        matchSquare = {x , y};
+                        window.cancelAnimationFrame(raf);
+                        resolveMove(matchSquare, staticBoard, updateBoard);
+                        console.log('matchSquare: ',matchSquare);
+                        // return;
+                    }
+                })
+            }
+    });
+});
+}
+
+    // button.addEventListener('click', () => {
+    //     window.cancelAnimationFrame(raf);
+    //     resolveMove({ x: 2, y: 0 }, staticBoard, updateBoard)
+    // });
+
+
 function drawGrid(board) {
-    const rows = board.length;
-    const columns = board[0].length;
-    const squareWidth = bw / columns;
-    const squareHeight = bh / rows;
+    // const rows = board.length;
+    // const columns = board[0].length;
+    // const squareWidth = bw / columns;
+    // const squareHeight = bh / rows;
 
     ctx.beginPath();
     for (var x = (squareWidth + 0.5); x <= bw; x += squareWidth) {
@@ -100,10 +136,10 @@ async function draw() {
 
     const { board, movedRockets } = boardAndMoves;
 
-    const columns = board.length;
-    const rows = board[0].length;
-    const squareWidth = bw / columns;
-    const squareHeight = bh / rows;
+    // const columns = board.length;
+    // const rows = board[0].length;
+    // const squareWidth = bw / columns;
+    // const squareHeight = bh / rows;
     const imageSize = (squareHeight);
 
     // Draw the grid, rockets that aren't moving and explosions
