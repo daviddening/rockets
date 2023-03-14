@@ -43,7 +43,6 @@ function getCursorPosition(canvas, event) {
     return {matchX, matchY};
 }
 
-//constant matchHead()
 
 function igniter() {
     let matchPosition = {};
@@ -60,18 +59,13 @@ function igniter() {
                         window.cancelAnimationFrame(raf);
                         resolveMove(matchSquare, staticBoard, updateBoard);
                         console.log('matchSquare: ',matchSquare);
-                        // return;
                     }
                 })
             }
+        });
     });
-});
 }
 
-    // button.addEventListener('click', () => {
-    //     window.cancelAnimationFrame(raf);
-    //     resolveMove({ x: 2, y: 0 }, staticBoard, updateBoard)
-    // });
 
 
 function drawGrid(board) {

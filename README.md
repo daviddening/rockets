@@ -15,7 +15,7 @@ https://github.com/daviddening/rockets
 - Clone git repo, per the workflow above
 - `flask run`
 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/Y2VhaMvIM1Q
 
 #### Description:
 Since Dave and Ben worked through CS50 as partners, they decided to conquer the FINAL PROJECT as a team. Multiple ideas were suggested and the final decision was made to write a web application that utilizes and expands upon a number of the skills learned in CS50.
