@@ -1,9 +1,24 @@
 /* Size for brand */
+#canvas {
+    background: #8aecff;
+    }
+
+
+body {
+    background-color: #29465B;
+    color: white;
+}
+
 nav .navbar-brand {
     font-size: xx-large;
 }
 
+.space {
+    padding: 20px;
+}
+
 .infoHeader {
+    color: white;
     width: 500px;
     display: inline-flex;
 }
